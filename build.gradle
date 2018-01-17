@@ -1,0 +1,46 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        maven { url "http://nexus.plshark.net/repository/maven-public/" }
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url "http://nexus.plshark.net/repository/maven-public/" }
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+subprojects {
+    apply plugin: 'maven'
+
+    group = "net.plshark.notes"
+    version = "2.1.0-SNAPSHOT"
+
+    uploadArchives {
+        repositories.mavenDeployer {
+            configuration = configurations.archives
+
+            repository(url: "http://nexus.plshark.net/repository/maven-releases/") {
+                authentication(userName: releaseUsername, password: releasePassword)
+            }
+
+            snapshotRepository(url: "http://nexus.plshark.net/repository/maven-snapshots/") {
+                authentication(userName: snapshotUsername, password: snapshotPassword)
+            }
+        }
+    }
+}
