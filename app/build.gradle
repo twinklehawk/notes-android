@@ -10,7 +10,6 @@ android {
         }
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "plshark.net.notes"
         minSdkVersion 19
