@@ -2,7 +2,7 @@
 
 buildscript {
     repositories {
-        maven { url "http://nexus.plshark.net/repository/maven-public/" }
+        google()
         jcenter()
     }
     dependencies {
@@ -15,32 +15,11 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url "http://nexus.plshark.net/repository/maven-public/" }
+        google()
         jcenter()
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-subprojects {
-    apply plugin: 'maven'
-
-    group = "net.plshark.notes"
-    version = "2.1.0-SNAPSHOT"
-
-    uploadArchives {
-        repositories.mavenDeployer {
-            configuration = configurations.archives
-
-            repository(url: "http://nexus.plshark.net/repository/maven-releases/") {
-                authentication(userName: releaseUsername, password: releasePassword)
-            }
-
-            snapshotRepository(url: "http://nexus.plshark.net/repository/maven-snapshots/") {
-                authentication(userName: snapshotUsername, password: snapshotPassword)
-            }
-        }
-    }
 }
