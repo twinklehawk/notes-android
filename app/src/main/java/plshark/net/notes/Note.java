@@ -11,8 +11,6 @@ import plshark.net.notes.utils.ParcelUtils;
 public class Note implements Parcelable {
 
     private Long id;
-    private Long serverId;
-    private Long ownerId;
     private String title;
     private String content;
 
@@ -95,7 +93,7 @@ public class Note implements Parcelable {
      * Read a note from a parcel
      * @param parcel the parcel to read from
      */
-    void readFromParcel(Parcel parcel) {
+    private void readFromParcel(Parcel parcel) {
         id = ParcelUtils.readLong(parcel);
         title = parcel.readString();
         content = parcel.readString();

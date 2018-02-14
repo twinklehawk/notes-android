@@ -27,7 +27,7 @@ public class EditNoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_note);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -95,8 +95,8 @@ public class EditNoteActivity extends AppCompatActivity {
      */
     void save() {
         // update the note with the text from the screen
-        EditText title = (EditText) findViewById(R.id.title_edit_edit_note);
-        EditText content = (EditText) findViewById(R.id.content_edit_edit_note);
+        EditText title = findViewById(R.id.title_edit_edit_note);
+        EditText content = findViewById(R.id.content_edit_edit_note);
 
         note.setTitle(title.getText().toString());
         note.setContent(content.getText().toString());
@@ -119,13 +119,13 @@ public class EditNoteActivity extends AppCompatActivity {
      */
     void setupTextViews(Note note) {
         if (!StringUtils.isEmpty(note.getTitle())) {
-            EditText title = (EditText) findViewById(R.id.title_edit_edit_note);
+            EditText title = findViewById(R.id.title_edit_edit_note);
 
             title.setText(note.getTitle());
         }
 
         if (!StringUtils.isEmpty(note.getContent())) {
-            EditText content = (EditText) findViewById(R.id.content_edit_edit_note);
+            EditText content = findViewById(R.id.content_edit_edit_note);
 
             content.setText(note.getContent());
             content.setSelection(content.length());

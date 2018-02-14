@@ -29,24 +29,6 @@ public class NoteXml {
     private static final String CONTENT_TAG = "content";
 
     /**
-     * Write a single note to an output stream as XML
-     * @param note the note to write
-     * @param stream the output stream
-     * @throws IOException if an IO error occurs
-     */
-    public void write(Note note, OutputStream stream) throws IOException {
-        XmlSerializer xml = Xml.newSerializer();
-
-        xml.setOutput(stream, ENCODING);
-        xml.startDocument(ENCODING, null);
-
-        writeNote(note, xml);
-
-        xml.endDocument();
-        xml.flush();
-    }
-
-    /**
      * Write a list of notes to an output stream as XML
      * @param notes the list of notes
      * @param stream the output stream
@@ -70,24 +52,6 @@ public class NoteXml {
     }
 
     /**
-     * Read a single note from a stream
-     * @param stream the stream to read from
-     * @return the note
-     * @throws XmlPullParserException if unable to read the XML
-     * @throws IOException if an IO error occurs
-     */
-    public Note readNote(InputStream stream) throws XmlPullParserException, IOException {
-        XmlPullParser parser = Xml.newPullParser();
-        Note note;
-
-        parser.setInput(stream, ENCODING);
-        parser.nextTag();
-        note = readNote(parser);
-
-        return note;
-    }
-
-    /**
      * Read a list of notes from a stream
      * @param stream the stream to read from
      * @return the list of notes
@@ -102,7 +66,7 @@ public class NoteXml {
         parser.nextTag();
         parser.require(XmlPullParser.START_TAG, NAMESPACE, NOTES_TAG);
 
-        notes = new ArrayList<Note>();
+        notes = new ArrayList<>();
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() == XmlPullParser.START_TAG) {
                 String tag = parser.getName();

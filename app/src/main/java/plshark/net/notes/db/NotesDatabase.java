@@ -12,7 +12,6 @@ import plshark.net.notes.Note;
 
 public class NotesDatabase {
 
-    private static final String LOG_TAG = NotesDatabase.class.getSimpleName();
     private static final String DB_NAME = "Notes.db";
     private static final int DB_VERSION = 2;
 
@@ -181,22 +180,13 @@ public class NotesDatabase {
     }
 
     /**
-     * Create a descending order by clause
-     * @param columnName the column to order by
-     * @return the clause
-     */
-    private String createDescending(String columnName) {
-        return createOrderBy(columnName, "DESC");
-    }
-
-    /**
      * Create a bound parameter clause using equals. This is intended to be used
      * in where clauses.
      * @param columnName the column that should have the bound parameter
      * @return the clause
      */
     private String createBoundEquals(String columnName) {
-        return new StringBuilder(columnName).append(" = ?").toString();
+        return columnName + " = ?";
     }
 
     /**
@@ -206,6 +196,6 @@ public class NotesDatabase {
      * @return the clause
      */
     private String createOrderBy(String columnName, String order) {
-        return new StringBuilder(columnName).append(" ").append(order).toString();
+        return columnName + " " + order;
     }
 }

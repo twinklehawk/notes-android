@@ -17,9 +17,9 @@ public class NoteListAdapter implements ListAdapter {
 
     private Context context;
     private List<Note> notes;
-    private List<DataSetObserver> observers = new ArrayList<DataSetObserver>();
+    private List<DataSetObserver> observers = new ArrayList<>();
 
-    public NoteListAdapter(Context context) {
+    NoteListAdapter(Context context) {
         this.context = context;
     }
 
@@ -37,7 +37,7 @@ public class NoteListAdapter implements ListAdapter {
      */
     public void addNote(Note note) {
         if (notes == null)
-            notes = new ArrayList<Note>();
+            notes = new ArrayList<>();
 
         notes.add(note);
         notifyDataSetChanged();
@@ -126,7 +126,7 @@ public class NoteListAdapter implements ListAdapter {
     /**
      * Notify registered DataSetObservers that the data has changed
      */
-    public void notifyDataSetChanged() {
+    private void notifyDataSetChanged() {
         for (DataSetObserver observer : observers)
             observer.onChanged();
     }
@@ -137,7 +137,7 @@ public class NoteListAdapter implements ListAdapter {
      * @param parent the parent ViewGroup
      * @return the view
      */
-    View createView(int position, ViewGroup parent) {
+    private View createView(int position, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return inflater.inflate(R.layout.note_list_item, parent, false);
     }
@@ -147,7 +147,7 @@ public class NoteListAdapter implements ListAdapter {
      * @param position the position of the new note
      * @param view the existing view
      */
-    void updateView(int position, View view) {
+    private void updateView(int position, View view) {
         Note note = notes.get(position);
         String content = note.getContent();
 

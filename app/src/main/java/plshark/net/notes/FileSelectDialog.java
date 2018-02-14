@@ -40,10 +40,9 @@ public class FileSelectDialog extends DialogFragment implements AdapterView.OnIt
             ListView listView;
 
             view = inflater.inflate(R.layout.dlg_file_select, container, false);
-            listView = (ListView) view.findViewById(R.id.lv_files);
+            listView = view.findViewById(R.id.lv_files);
 
-            adapter = new ArrayAdapter<String>(getActivity(),
-                    android.R.layout.simple_list_item_1);
+            adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
             adapter.addAll(files);
             listView.setAdapter(adapter);
 
@@ -84,7 +83,7 @@ public class FileSelectDialog extends DialogFragment implements AdapterView.OnIt
 
     /**
      * Get the names of all files in the external notes directory
-     * @return
+     * @return the file names
      */
     private String[] getFiles() {
         String dirName = getDirectory();
