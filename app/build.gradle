@@ -6,8 +6,8 @@ android {
         applicationId "plshark.net.notes"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 3
-        versionName "2.1"
+        versionCode 4
+        versionName "2.3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
