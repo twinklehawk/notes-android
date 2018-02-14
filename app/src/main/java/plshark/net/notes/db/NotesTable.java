@@ -2,6 +2,9 @@ package plshark.net.notes.db;
 
 import android.provider.BaseColumns;
 
+/**
+ * Definition for the notes table
+ */
 interface NotesTable extends BaseColumns {
     String TABLE_NAME = "notes";
     String COLUMN_TITLE = "title";

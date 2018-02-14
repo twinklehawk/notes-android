@@ -18,10 +18,18 @@ public class NotesDatabase {
 
     private SQLiteOpenHelper helper;
 
+    /**
+     * Create a new instance
+     * @param context the context for opening and creating the database
+     */
     public NotesDatabase(Context context) {
         helper = new NotesOpenHelper(context, DB_NAME, null, DB_VERSION);
     }
 
+    /**
+     * Save a new note
+     * @param note the note
+     */
     public void insertNote(Note note) {
         long id;
         ContentValues values = new ContentValues();
@@ -34,6 +42,10 @@ public class NotesDatabase {
         note.setId(id);
     }
 
+    /**
+     * Update an existing note
+     * @param note the note
+     */
     public void updateNote(Note note) {
         if (note.getId() == null)
             throw new NullPointerException("Cannot update note with no ID");
@@ -53,6 +65,10 @@ public class NotesDatabase {
         update(NotesTable.TABLE_NAME, values, where, args);
     }
 
+    /**
+     * Delete a note
+     * @param note the note
+     */
     public void deleteNote(Note note) {
         if (note.getId() == null)
             throw new NullPointerException("Cannot delete note with no ID");
@@ -67,6 +83,11 @@ public class NotesDatabase {
         delete(NotesTable.TABLE_NAME, query, args);
     }
 
+    /**
+     * Find a note by ID
+     * @param id the note ID
+     * @return the matching note or null if not found
+     */
     public Note getNote(long id) {
         Note note = null;
         List<Note> list;
@@ -83,6 +104,10 @@ public class NotesDatabase {
         return note;
     }
 
+    /**
+     * Get all stored notes
+     * @return the list of notes
+     */
     public List<Note> getAllNotes() {
         NoteParser parser = new NoteParser();
 
@@ -100,7 +125,7 @@ public class NotesDatabase {
      * @param args arguments for the where statement
      * @param orderBy the order by statement
      */
-    void select(CursorHandler handler, String tableName, String[] columns, String where, String[] args, String orderBy) {
+    private void select(CursorHandler handler, String tableName, String[] columns, String where, String[] args, String orderBy) {
         try (SQLiteDatabase db = helper.getReadableDatabase()) {
             try (Cursor cursor = db.query(tableName, columns, where, args, null, null, orderBy)) {
                 handler.handleResults(cursor);
@@ -108,19 +133,39 @@ public class NotesDatabase {
         }
     }
 
-    long insert(String tableName, String nullColumnHack, ContentValues values) {
+    /**
+     * Build and execute an insert and return the generated ID
+     * @param tableName the table to insert into
+     * @param nullColumnHack the null column hack, see {@link SQLiteDatabase#insert(String, String, ContentValues)}
+     * @param values the values to insert
+     * @return the generated ID
+     */
+    private long insert(String tableName, String nullColumnHack, ContentValues values) {
         try (SQLiteDatabase db = helper.getWritableDatabase()) {
             return db.insertOrThrow(tableName, nullColumnHack, values);
         }
     }
 
-    void delete(String tableName, String where, String[] args) {
+    /**
+     * Delete a row from a table
+     * @param tableName the table to delete from
+     * @param where the filter to use to delete rows
+     * @param args any arguments for the where clause
+     */
+    private void delete(String tableName, String where, String[] args) {
         try (SQLiteDatabase db = helper.getWritableDatabase()) {
             db.delete(tableName, where, args);
         }
     }
 
-    void update(String tableName, ContentValues values, String where, String[] args) {
+    /**
+     * Update a row in a table
+     * @param tableName the table to delete from
+     * @param values the values to update
+     * @param where the filter to use to choose what is updated
+     * @param args the arguments for the where clause
+     */
+    private void update(String tableName, ContentValues values, String where, String[] args) {
         try (SQLiteDatabase db = helper.getWritableDatabase()) {
             db.update(tableName, values, where, args);
         }
@@ -131,7 +176,7 @@ public class NotesDatabase {
      * @param columnName the column to order by
      * @return the clause
      */
-    String createAscending(String columnName) {
+    private String createAscending(String columnName) {
         return createOrderBy(columnName, "ASC");
     }
 
@@ -140,7 +185,7 @@ public class NotesDatabase {
      * @param columnName the column to order by
      * @return the clause
      */
-    String createDescending(String columnName) {
+    private String createDescending(String columnName) {
         return createOrderBy(columnName, "DESC");
     }
 
@@ -150,7 +195,7 @@ public class NotesDatabase {
      * @param columnName the column that should have the bound parameter
      * @return the clause
      */
-    String createBoundEquals(String columnName) {
+    private String createBoundEquals(String columnName) {
         return new StringBuilder(columnName).append(" = ?").toString();
     }
 
@@ -160,7 +205,7 @@ public class NotesDatabase {
      * @param order ascending or descending
      * @return the clause
      */
-    String createOrderBy(String columnName, String order) {
+    private String createOrderBy(String columnName, String order) {
         return new StringBuilder(columnName).append(" ").append(order).toString();
     }
 }

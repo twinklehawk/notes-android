@@ -19,6 +19,9 @@ import plshark.net.notes.utils.StringUtils;
  */
 public class FileSelectDialog extends DialogFragment implements AdapterView.OnItemClickListener {
 
+    /**
+     * Interface to receive a callback for what file was selected
+     */
     public interface IFileSelectListener {
         void onFileSelected(String filename);
     }
@@ -26,10 +29,6 @@ public class FileSelectDialog extends DialogFragment implements AdapterView.OnIt
     public static final String BASE_DIRECTORY = FileSelectDialog.class.getCanonicalName() + ".DIRECTORY";
 
     private ArrayAdapter<String> adapter;
-
-    public FileSelectDialog() {
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +65,11 @@ public class FileSelectDialog extends DialogFragment implements AdapterView.OnIt
         dismiss();
     }
 
-    String getDirectory() {
+    /**
+     * Get the external notes directory
+     * @return the directory name
+     */
+    private String getDirectory() {
         Bundle args = getArguments();
         String dirName;
 
@@ -79,7 +82,11 @@ public class FileSelectDialog extends DialogFragment implements AdapterView.OnIt
         return dirName;
     }
 
-    String[] getFiles() {
+    /**
+     * Get the names of all files in the external notes directory
+     * @return
+     */
+    private String[] getFiles() {
         String dirName = getDirectory();
 
         return new File(dirName).list(new FilenameFilter() {

@@ -4,18 +4,12 @@ import android.database.Cursor;
 
 import plshark.net.notes.Note;
 
+/**
+ * Parser that parses rows from a cursor into notes
+ */
 public class NoteParser extends AbstractParser<Note> {
 
     public static final String[] COLUMNS = { NotesTable._ID, NotesTable.COLUMN_TITLE, NotesTable.COLUMN_CONTENT };
-
-    private int idIndex;
-    private int titleIndex;
-    private int contentIndex;
-    private int starredIndex;
-
-    public NoteParser() {
-
-    }
 
     @Override
     public String[] getColumns() {

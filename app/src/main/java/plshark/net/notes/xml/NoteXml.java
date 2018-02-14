@@ -28,10 +28,12 @@ public class NoteXml {
     private static final String TITLE_TAG = "title";
     private static final String CONTENT_TAG = "content";
 
-    public NoteXml() {
-
-    }
-
+    /**
+     * Write a single note to an output stream as XML
+     * @param note the note to write
+     * @param stream the output stream
+     * @throws IOException if an IO error occurs
+     */
     public void write(Note note, OutputStream stream) throws IOException {
         XmlSerializer xml = Xml.newSerializer();
 
@@ -44,6 +46,12 @@ public class NoteXml {
         xml.flush();
     }
 
+    /**
+     * Write a list of notes to an output stream as XML
+     * @param notes the list of notes
+     * @param stream the output stream
+     * @throws IOException if an IO error occurs
+     */
     public void write(List<Note> notes, OutputStream stream) throws IOException {
         XmlSerializer xml = Xml.newSerializer();
 
@@ -61,6 +69,13 @@ public class NoteXml {
         xml.flush();
     }
 
+    /**
+     * Read a single note from a stream
+     * @param stream the stream to read from
+     * @return the note
+     * @throws XmlPullParserException if unable to read the XML
+     * @throws IOException if an IO error occurs
+     */
     public Note readNote(InputStream stream) throws XmlPullParserException, IOException {
         XmlPullParser parser = Xml.newPullParser();
         Note note;
@@ -72,6 +87,13 @@ public class NoteXml {
         return note;
     }
 
+    /**
+     * Read a list of notes from a stream
+     * @param stream the stream to read from
+     * @return the list of notes
+     * @throws XmlPullParserException if unable to read the XML
+     * @throws IOException if an IO error occurs
+     */
     public List<Note> readNotes(InputStream stream) throws XmlPullParserException, IOException {
         XmlPullParser parser = Xml.newPullParser();
         List<Note> notes;
@@ -92,7 +114,7 @@ public class NoteXml {
         return notes;
     }
 
-    void writeNote(Note note, XmlSerializer xml) throws IOException {
+    private void writeNote(Note note, XmlSerializer xml) throws IOException {
         xml.startTag(NAMESPACE, NOTE_TAG);
 
         if (note.getId() != null)
@@ -105,7 +127,7 @@ public class NoteXml {
         xml.endTag(NAMESPACE, NOTE_TAG);
     }
 
-    Note readNote(XmlPullParser parser) throws XmlPullParserException,
+    private Note readNote(XmlPullParser parser) throws XmlPullParserException,
             IOException {
         Note note;
 

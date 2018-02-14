@@ -35,6 +35,10 @@ import java.util.Locale;
 import plshark.net.notes.db.NotesDatabase;
 import plshark.net.notes.xml.NoteXml;
 
+/**
+ * Activity for displaying all the notes
+ */
+// TODO split this up into multiple classes
 public class AllNotesActivity extends AppCompatActivity implements FileSelectDialog.IFileSelectListener {
 
     private static final int WRITE_STORAGE_EXPORT = 1;
@@ -120,36 +124,7 @@ public class AllNotesActivity extends AppCompatActivity implements FileSelectDia
         }
     }
 
-    void editNote(Note note) {
-        Intent intent = new Intent(this, EditNoteActivity.class);
-
-        intent.putExtra(EditNoteActivity.EDIT_NOTE, note);
-        startActivity(intent);
-    }
-
-    void createNote() {
-        startActivity(new Intent(this, EditNoteActivity.class));
-    }
-
-    void importNotes() {
-        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    WRITE_STORAGE_IMPORT);
-        else
-            importNotesPermissionGranted();
-    }
-
-    void importNotesPermissionGranted() {
-        FileSelectDialog dlg = new FileSelectDialog();
-        Bundle args = new Bundle();
-        String dir = Environment.getExternalStoragePublicDirectory("notes").getAbsolutePath();
-
-        args.putString(FileSelectDialog.BASE_DIRECTORY, dir);
-        dlg.setArguments(args);
-        dlg.show(getFragmentManager(), "file_select");
-    }
-
+    @Override
     public void onFileSelected(String filename) {
         try {
             List<Note> notes = parseFile(filename);
@@ -161,7 +136,57 @@ public class AllNotesActivity extends AppCompatActivity implements FileSelectDia
         }
     }
 
-    List<Note> parseFile(String file) throws XmlPullParserException, IOException {
+    /**
+     * Open the activity to edit a note
+     * @param note the note to edit
+     */
+    private void editNote(Note note) {
+        Intent intent = new Intent(this, EditNoteActivity.class);
+
+        intent.putExtra(EditNoteActivity.EDIT_NOTE, note);
+        startActivity(intent);
+    }
+
+    /**
+     * Open the activity to create a note
+     */
+    private void createNote() {
+        startActivity(new Intent(this, EditNoteActivity.class));
+    }
+
+    /**
+     * Import notes from a file
+     */
+    private void importNotes() {
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    WRITE_STORAGE_IMPORT);
+        else
+            importNotesPermissionGranted();
+    }
+
+    /**
+     * Import notes from a file after permissions have been granted
+     */
+    private void importNotesPermissionGranted() {
+        FileSelectDialog dlg = new FileSelectDialog();
+        Bundle args = new Bundle();
+        String dir = Environment.getExternalStoragePublicDirectory("notes").getAbsolutePath();
+
+        args.putString(FileSelectDialog.BASE_DIRECTORY, dir);
+        dlg.setArguments(args);
+        dlg.show(getFragmentManager(), "file_select");
+    }
+
+    /**
+     * Parse a file containing serialized notes
+     * @param file the file to parse
+     * @return the parsed notes
+     * @throws XmlPullParserException if unable to parse the file
+     * @throws IOException if an IO error occurs
+     */
+    private List<Note> parseFile(String file) throws XmlPullParserException, IOException {
         NoteXml xml = new NoteXml();
         List<Note> notes;
 
@@ -172,7 +197,10 @@ public class AllNotesActivity extends AppCompatActivity implements FileSelectDia
         return notes;
     }
 
-    void exportNotes() {
+    /**
+     * Export all notes to a file
+     */
+    private void exportNotes() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -182,7 +210,10 @@ public class AllNotesActivity extends AppCompatActivity implements FileSelectDia
 
     }
 
-    void exportNotesPermissionGranted() {
+    /**
+     * Export all notes to a file after permissions have been granted
+     */
+    private void exportNotesPermissionGranted() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permissionCheck == PackageManager.PERMISSION_GRANTED)
             try (FileOutputStream stream = new FileOutputStream(getExportFile())) {
@@ -195,7 +226,12 @@ public class AllNotesActivity extends AppCompatActivity implements FileSelectDia
             }
     }
 
-    File getExportFile() throws IOException {
+    /**
+     * Get the file to use when exporting notes
+     * @return the file
+     * @throws IOException if unable to create the file
+     */
+    private File getExportFile() throws IOException {
         File file;
         File dir = Environment.getExternalStoragePublicDirectory("notes");
 

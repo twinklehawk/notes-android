@@ -6,9 +6,8 @@ import android.os.Parcelable;
 import plshark.net.notes.utils.ParcelUtils;
 
 /**
- * Created by alex on 11/19/16.
+ * Data for a note
  */
-
 public class Note implements Parcelable {
 
     private Long id;
@@ -92,6 +91,10 @@ public class Note implements Parcelable {
         dest.writeString(content);
     }
 
+    /**
+     * Read a note from a parcel
+     * @param parcel the parcel to read from
+     */
     void readFromParcel(Parcel parcel) {
         id = ParcelUtils.readLong(parcel);
         title = parcel.readString();

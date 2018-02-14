@@ -11,6 +11,9 @@ import android.widget.EditText;
 import plshark.net.notes.db.NotesDatabase;
 import plshark.net.notes.utils.StringUtils;
 
+/**
+ * Activity for creating and editing a note
+ */
 public class EditNoteActivity extends AppCompatActivity {
 
     /**
