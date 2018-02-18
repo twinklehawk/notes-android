@@ -13,8 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,7 +33,6 @@ import plshark.net.notes.xml.NoteXml;
 /**
  * Activity for displaying all the notes
  */
-// TODO split this up into multiple classes
 public class AllNotesActivity extends AppCompatActivity implements FileSelectDialog.IFileSelectListener {
 
     private static final int WRITE_STORAGE_EXPORT = 1;
@@ -54,30 +51,21 @@ public class AllNotesActivity extends AppCompatActivity implements FileSelectDia
         db = new NotesDatabase(this);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createNote();
-            }
-        });
+        fab.setOnClickListener(view -> createNote());
 
         // setup the list view
         ListView listView = findViewById(R.id.list_view_all_notes);
         adapter = new NoteListAdapter(this);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Note note = (Note) adapterView.getItemAtPosition(position);
-                editNote(note);
-            }
+        listView.setOnItemClickListener((adapterView, view, position, id) -> {
+            Note note = (Note) adapterView.getItemAtPosition(position);
+            editNote(note);
         });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
         adapter.setNotes(db.getAllNotes());
     }
 
