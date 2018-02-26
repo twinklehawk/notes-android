@@ -6,11 +6,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.google.common.base.Optional;
+
 import java.util.List;
 
 import plshark.net.notes.Note;
+import plshark.net.notes.repository.NotesRepository;
 
-public class NotesDatabase {
+public class NotesDatabase implements NotesRepository {
 
     private static final String DB_NAME = "Notes.db";
     private static final int DB_VERSION = 2;
@@ -23,6 +26,12 @@ public class NotesDatabase {
      */
     public NotesDatabase(Context context) {
         helper = new NotesOpenHelper(context, DB_NAME, null, DB_VERSION);
+    }
+
+    @Override
+    public Note insert(Note note) {
+        insertNote(note);
+        return note;
     }
 
     /**
@@ -39,6 +48,12 @@ public class NotesDatabase {
         id = insert(NotesTable.TABLE_NAME, null, values);
 
         note.setId(id);
+    }
+
+    @Override
+    public Note update(Note note) {
+        updateNote(note);
+        return note;
     }
 
     /**
@@ -62,6 +77,11 @@ public class NotesDatabase {
         values.put(NotesTable.COLUMN_CONTENT, note.getContent());
 
         update(NotesTable.TABLE_NAME, values, where, args);
+    }
+
+    @Override
+    public void delete(Note note) {
+        deleteNote(note);
     }
 
     /**
@@ -96,11 +116,20 @@ public class NotesDatabase {
                 NoteParser.COLUMNS, createBoundEquals(NotesTable._ID), new String[] { String.valueOf(id) }, null);
         list = parser.getList();
 
-        // TODO throw exception if not found
         if (!list.isEmpty())
             note = list.get(0);
 
         return note;
+    }
+
+    @Override
+    public Optional<Note> getById(long id) {
+        return Optional.fromNullable(getNote(id));
+    }
+
+    @Override
+    public List<Note> getAll() {
+        return getAllNotes();
     }
 
     /**
