@@ -13,6 +13,9 @@ import java.util.List;
 import plshark.net.notes.Note;
 import plshark.net.notes.repository.NotesRepository;
 
+/**
+ * Notes repository that uses MySQL for storage
+ */
 public class NotesDatabase implements NotesRepository {
 
     private static final String DB_NAME = "Notes.db";
