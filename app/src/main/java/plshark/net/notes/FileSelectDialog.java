@@ -1,10 +1,10 @@
 package plshark.net.notes;
 
 import java.io.File;
-import java.io.FilenameFilter;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +31,7 @@ public class FileSelectDialog extends DialogFragment implements AdapterView.OnIt
     private ArrayAdapter<String> adapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view;
         String[] files = getFiles();
@@ -88,12 +88,9 @@ public class FileSelectDialog extends DialogFragment implements AdapterView.OnIt
     private String[] getFiles() {
         String dirName = getDirectory();
 
-        return new File(dirName).list(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                File file = new File(dir, name);
-                return file.isFile();
-            }
+        return new File(dirName).list((dir, name) -> {
+            File file = new File(dir, name);
+            return file.isFile();
         });
     }
 }

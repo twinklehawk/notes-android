@@ -161,7 +161,7 @@ public class AllNotesActivity extends AppCompatActivity implements FileSelectDia
 
         args.putString(FileSelectDialog.BASE_DIRECTORY, dir);
         dlg.setArguments(args);
-        dlg.show(getFragmentManager(), "file_select");
+        dlg.show(getSupportFragmentManager(), "file_select");
     }
 
     /**
